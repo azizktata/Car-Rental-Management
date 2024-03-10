@@ -1,26 +1,17 @@
-package com.example.ParcAuto.Models;
+package com.example.ParcAuto.DTOs.Requests;
 
 import com.example.ParcAuto.Enum.TypeMaintenance;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Entity
-public class Maintenance {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+public class MaintnenaceRequest {
     private TypeMaintenance type;
     private String duree;
 
-    @ManyToOne
-    private Voiture voiture;
 }
