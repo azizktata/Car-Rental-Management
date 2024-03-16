@@ -2,6 +2,7 @@ package com.example.ParcAuto.Services;
 
 import com.example.ParcAuto.DTOs.Requests.EmployeRequest;
 import com.example.ParcAuto.DTOs.Requests.VoitureRequest;
+import com.example.ParcAuto.Enum.StatusVoiture;
 import com.example.ParcAuto.Exceptions.ObjectNotFoundException;
 import com.example.ParcAuto.Models.Employe;
 import com.example.ParcAuto.Models.Voiture;
@@ -19,7 +20,13 @@ public class VoitureService {
     @Autowired
     private PortReposiotry portReposiotry;
 
-    public Voiture addVoiture(Voiture voiture){
+    public Voiture addVoiture(VoitureRequest request){
+        Voiture voiture = Voiture.builder()
+                .port(portReposiotry.findByName(request.getPortName()).orElseThrow(()-> new ObjectNotFoundException("port not found")))
+                .numMatricule(request.getNumMatricule())
+                .marque(request.getMarque())
+                .statusVoiture(StatusVoiture.disponible)
+                .build();
         return voitureRepository.save(voiture);
     }
 
@@ -29,6 +36,18 @@ public class VoitureService {
 
     public Voiture getVoiture(Long voitureId){
         return voitureRepository.findById(voitureId).orElseThrow(()-> new ObjectNotFoundException("voiture not found"));
+    }
+    public List<Voiture> getVoituresByMarque(String marque){
+        return voitureRepository.findByMarque(marque);
+    }
+    public List<Voiture> getVoituresByPortName(String portName){
+        return voitureRepository.findByPortName(portName);
+    }
+    public List<Voiture> getVoituresDisponible(){
+        return voitureRepository.findVoituresDispo();
+    }
+    public List<Voiture> getVoituresIndisponible(){
+        return voitureRepository.findVoituresIndispo();
     }
 
     public Voiture updateVoiture(Long voitureId, VoitureRequest voitureRequest){
@@ -42,4 +61,6 @@ public class VoitureService {
     public void deleteVoiture(Long voitureId){
         voitureRepository.deleteById(voitureId);
     }
+
+
 }

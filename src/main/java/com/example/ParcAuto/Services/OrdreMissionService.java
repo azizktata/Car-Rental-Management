@@ -1,8 +1,8 @@
 package com.example.ParcAuto.Services;
 
 import com.example.ParcAuto.DTOs.Requests.MissionRequest;
-import com.example.ParcAuto.DTOs.Requests.MissionUpdateRequest;
 import com.example.ParcAuto.Enum.StatusMission;
+import com.example.ParcAuto.Enum.StatusVoiture;
 import com.example.ParcAuto.Exceptions.ObjectNotFoundException;
 import com.example.ParcAuto.Models.Consommation;
 import com.example.ParcAuto.Models.Employe;
@@ -48,11 +48,12 @@ public class OrdreMissionService {
                 .locationFin(missionRequest.getLocationFin())
                 .dateDebut(missionRequest.getDateDebut())
                 .dateFin(missionRequest.getDateFin())
-                .companions(missionRequest.getCompanions())
+                .compagnons(missionRequest.getCompanions())
                 .statusMission(StatusMission.Encours)
                 .employe(employe)
                 .voiture(voiture)
                 .build();
+        voiture.setStatusVoiture(StatusVoiture.indisponible);
         return ordreMissionRepository.save(ordreMission);
     }
 
@@ -60,21 +61,28 @@ public class OrdreMissionService {
         OrdreMission ordreMission = ordreMissionRepository.findById(missionId).orElseThrow(()-> new ObjectNotFoundException("Mission not found"));
 
         if (status == "ok"){
-            ordreMission.setStatusMission(StatusMission.Valider);
+            ordreMission.setStatusMission(StatusMission.Validé);
         }
-        else if (status == "ko")
-            ordreMission.setStatusMission(StatusMission.Refuser);
+        else if (status == "ko"){
+            ordreMission.setStatusMission(StatusMission.Annulé);
+            Voiture voiture = ordreMission.getVoiture();
+            voiture.setStatusVoiture(StatusVoiture.disponible);
+            voitureRepository.save(voiture);
+        }
 
         return ordreMissionRepository.save(ordreMission);
     }
 
-    public OrdreMission ajoutConsommationEtReport(Long missionId, MissionUpdateRequest request){
+    public OrdreMission ajoutConsommation(Long missionId, Consommation consommation){
         OrdreMission ordreMission = ordreMissionRepository.findById(missionId).orElseThrow(()-> new ObjectNotFoundException("Mission not found"));
-        ordreMission.setConsommation(request.getConsommation());
-        ordreMission.setReport(request.getReport());
+        ordreMission.setConsommation(consommation);
         return ordreMissionRepository.save(ordreMission);
     }
     public void deleteMission(Long missionId){
-        ordreMissionRepository.deleteById(missionId);
+        OrdreMission ordreMission = ordreMissionRepository.findById(missionId).orElseThrow(()-> new ObjectNotFoundException("Mission not found"));
+        Voiture voiture = ordreMission.getVoiture();
+        voiture.setStatusVoiture(StatusVoiture.disponible);
+        voitureRepository.save(voiture);
+        ordreMissionRepository.delete(ordreMission);
     }
 }

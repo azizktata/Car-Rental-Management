@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 public class MaintnenaceRequest {
     private TypeMaintenance type;
     private String duree;
-
+    private long voitureId;
 }

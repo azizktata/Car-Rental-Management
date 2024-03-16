@@ -1,17 +1,15 @@
 package com.example.ParcAuto.Controllers;
 
+import com.example.ParcAuto.DTOs.Requests.VoitureRequest;
 import com.example.ParcAuto.Models.Voiture;
 import com.example.ParcAuto.Services.VoitureService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/voitures")
+@RequestMapping("/voitures")
 public class VoitureController {
 
     @Autowired
@@ -23,7 +21,40 @@ public class VoitureController {
     }
 
     @GetMapping("/{id}")
-    public Voiture getVoiture(@PathVariable Long voitureId){
-        return voitureService.getVoiture(voitureId);
+    public Voiture getVoiture(@PathVariable Long id){
+        return voitureService.getVoiture(id);
+    }
+
+    @GetMapping("/marque/{marque}")
+    public List<Voiture> getVoituresByMarque(@PathVariable String marque){
+        return voitureService.getVoituresByMarque(marque);
+    }
+    @GetMapping("/port/{portName}")
+    public List<Voiture> getVoituresByPortName(@PathVariable String portName){
+        return voitureService.getVoituresByPortName(portName);
+    }
+
+    @GetMapping("/0")
+    public List<Voiture> getVoituresDispo(){
+        return voitureService.getVoituresDisponible();
+    }
+    @GetMapping("/1")
+    public List<Voiture> getVoituresIndispo(){
+        return voitureService.getVoituresIndisponible();
+    }
+
+    @PostMapping
+    public Voiture addVoiture(@RequestBody VoitureRequest request){
+        return voitureService.addVoiture(request);
+    }
+
+    @PutMapping("/{id}")
+    public Voiture updateVoiture(@PathVariable Long id,@RequestBody VoitureRequest request){
+        return voitureService.updateVoiture(id,request);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteVoiture(@PathVariable Long id){
+         voitureService.deleteVoiture(id);
     }
 }

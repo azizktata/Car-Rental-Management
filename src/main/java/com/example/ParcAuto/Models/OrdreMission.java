@@ -22,11 +22,14 @@ public class OrdreMission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private StatusMission statusMission;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateDebut;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateFin;
     private String locationDebut;
     private String locationFin;
-    private List<String> companions = new ArrayList<>();
+    private List<String> compagnons  = new ArrayList<>();
 
     @ManyToOne
     @JsonIgnore
@@ -36,6 +39,5 @@ public class OrdreMission {
     private Voiture voiture;
     @Embedded
     private Consommation consommation;
-    @Embedded
-    private Report report;
+
 }
