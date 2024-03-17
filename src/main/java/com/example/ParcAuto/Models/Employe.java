@@ -22,9 +22,12 @@ public class Employe {
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
     private Fonction fonction;
+    private String password;
 
     @OneToMany(mappedBy = "employe", cascade = CascadeType.ALL)
     private List<OrdreMission> mesMissions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "employe", cascade = CascadeType.ALL)
+    private List<Report> mesReports = new ArrayList<>();
 }

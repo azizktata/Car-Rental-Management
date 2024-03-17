@@ -30,6 +30,7 @@ public class Voiture {
     private Port port;
 
     @OneToMany(mappedBy = "voiture", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<OrdreMission> missionList = new ArrayList<>();
 
     @OneToMany(mappedBy = "voiture", cascade = CascadeType.ALL)

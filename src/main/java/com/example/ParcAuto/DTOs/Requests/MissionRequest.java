@@ -1,6 +1,7 @@
 package com.example.ParcAuto.DTOs.Requests;
 
 import com.example.ParcAuto.Enum.StatusMission;
+import com.example.ParcAuto.Models.Consommation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,4 +21,7 @@ public class MissionRequest {
     private String locationDebut;
     private String locationFin;
     private List<String> companions = new ArrayList<>();
+    private Long voitureId;
+    private Consommation consommation;
+
 }

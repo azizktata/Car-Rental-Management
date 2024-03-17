@@ -27,15 +27,16 @@ public class OrdreMission {
     private Date dateDebut;
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateFin;
+
     private String locationDebut;
     private String locationFin;
     private List<String> compagnons  = new ArrayList<>();
+    private String conducteur;
 
     @ManyToOne
     @JsonIgnore
     private Employe employe;
     @ManyToOne
-    @JsonIgnore
     private Voiture voiture;
     @Embedded
     private Consommation consommation;

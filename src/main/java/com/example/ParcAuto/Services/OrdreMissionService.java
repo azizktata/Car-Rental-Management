@@ -40,20 +40,41 @@ public class OrdreMissionService {
         return ordreMissionRepository.findByVoitureId(voitureId);
     }
 
-    public OrdreMission addMission(Long employeId, Long voitureId, MissionRequest missionRequest){
+    public OrdreMission addMission(Long employeId, MissionRequest request){
         Employe employe = employeRepository.findById(employeId).orElseThrow(()-> new ObjectNotFoundException("employe not found"));
-        Voiture voiture = voitureRepository.findById(voitureId).orElseThrow(()-> new ObjectNotFoundException("voiture not found"));
+        Voiture voiture = voitureRepository.findById(request.getVoitureId()).orElseThrow(()-> new ObjectNotFoundException("voiture not found"));
+        if (voiture.getStatusVoiture()==StatusVoiture.indisponible)
+            throw new ObjectNotFoundException("voiture n'est pas diponible");
         OrdreMission ordreMission = OrdreMission.builder()
-                .locationDebut(missionRequest.getLocationDebut())
-                .locationFin(missionRequest.getLocationFin())
-                .dateDebut(missionRequest.getDateDebut())
-                .dateFin(missionRequest.getDateFin())
-                .compagnons(missionRequest.getCompanions())
+                .locationDebut(request.getLocationDebut())
+                .locationFin(request.getLocationFin())
+                .dateDebut(request.getDateDebut())
+                .dateFin(request.getDateFin())
+                .compagnons(request.getCompanions())
                 .statusMission(StatusMission.Encours)
                 .employe(employe)
+                .conducteur(employe.getFirstName()+" "+employe.getLastName())
                 .voiture(voiture)
                 .build();
         voiture.setStatusVoiture(StatusVoiture.indisponible);
+        voitureRepository.save(voiture);
+        return ordreMissionRepository.save(ordreMission);
+    }
+
+    public OrdreMission updateMission(Long missionId, MissionRequest request){
+        OrdreMission ordreMission = ordreMissionRepository.findById(missionId).orElseThrow(()-> new ObjectNotFoundException("Mission not found"));
+
+        ordreMission.setDateDebut(request.getDateDebut());
+        ordreMission.setDateFin(request.getDateFin());
+        ordreMission.setLocationDebut(request.getLocationDebut());
+        ordreMission.setLocationFin(request.getLocationFin());
+        ordreMission.setCompagnons(request.getCompanions());
+
+        if (ordreMission.getStatusMission().equals(StatusMission.Validé) && request.getConsommation()!=null)
+            ordreMission.setConsommation(request.getConsommation());
+        else
+            throw new RuntimeException("Mission doit etre validé avant de soumettre consommation");
+
         return ordreMissionRepository.save(ordreMission);
     }
 
@@ -80,7 +101,7 @@ public class OrdreMissionService {
     }
     public void deleteMission(Long missionId){
         OrdreMission ordreMission = ordreMissionRepository.findById(missionId).orElseThrow(()-> new ObjectNotFoundException("Mission not found"));
-        Voiture voiture = ordreMission.getVoiture();
+        Voiture voiture = voitureRepository.findById(ordreMission.getVoiture().getId()).orElseThrow(()-> new ObjectNotFoundException("voiture not found"));
         voiture.setStatusVoiture(StatusVoiture.disponible);
         voitureRepository.save(voiture);
         ordreMissionRepository.delete(ordreMission);

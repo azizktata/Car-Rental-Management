@@ -34,11 +34,11 @@ public class VoitureController {
         return voitureService.getVoituresByPortName(portName);
     }
 
-    @GetMapping("/0")
+    @GetMapping("/dispo")
     public List<Voiture> getVoituresDispo(){
         return voitureService.getVoituresDisponible();
     }
-    @GetMapping("/1")
+    @GetMapping("/indispo")
     public List<Voiture> getVoituresIndispo(){
         return voitureService.getVoituresIndisponible();
     }
