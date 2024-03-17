@@ -1,5 +1,6 @@
 package com.example.ParcAuto.Models;
 
+import com.example.ParcAuto.DTOs.Requests.VoitureRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,5 +23,13 @@ public class Port {
     private String location;
 
     @OneToMany(mappedBy = "port", cascade = CascadeType.ALL)
-    private List<Voiture> voitureList = new ArrayList<>();
+    private List<Voiture> voitureList;
+
+//    public void addVoitures(List<VoitureRequest> voitureRequests) {
+//        for (VoitureRequest request: voitureRequests) {
+//            voitureList.add(Voiture.builder()
+//                            .marque(request.getMarque())
+//                            .numMatricule(request.getNumMatricule()).build());
+//        }
+//    }
 }
