@@ -1,5 +1,6 @@
 package com.example.ParcAuto.Services;
 
+import com.example.ParcAuto.DTOs.Requests.AlerteResponse;
 import com.example.ParcAuto.DTOs.Requests.ReportRequest;
 import com.example.ParcAuto.Enum.StatusVoiture;
 import com.example.ParcAuto.Exceptions.ObjectNotFoundException;
@@ -44,9 +45,7 @@ public class ReportService {
         return reportRepository.findAll();
     }
 
-    public long getReportCount(){
-        return reportRepository.count();
-    }
+
 
     public Report getReport(Long reportId){
         return reportRepository.findById(reportId).orElseThrow(()-> new ObjectNotFoundException("report not found"));

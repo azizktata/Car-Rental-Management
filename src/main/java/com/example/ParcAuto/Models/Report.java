@@ -1,5 +1,6 @@
 package com.example.ParcAuto.Models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,10 +27,10 @@ public class Report {
     private Employe employe;
 
     // new
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateAccident;
     private String lieuxAccident;
     @ManyToOne
-    @JsonIgnore
     private Voiture voiture;
 
 

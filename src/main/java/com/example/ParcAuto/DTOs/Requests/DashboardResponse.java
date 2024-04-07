@@ -22,4 +22,5 @@ public class DashboardResponse {
     private long missionE;
     private long missionA;
     private List<Object> voitureParPort;
+    private List<AlerteResponse> alerts;
 }

@@ -57,8 +57,10 @@ public class Voiture {
     private List<OrdreMission> missionList = new ArrayList<>();
 
     @OneToMany(mappedBy = "voiture", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Maintenance> maintenanceList = new ArrayList<>();
 
     @OneToMany(mappedBy = "voiture", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Report> accidentList = new ArrayList<>();
 }

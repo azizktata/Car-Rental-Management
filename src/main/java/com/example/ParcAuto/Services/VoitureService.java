@@ -1,14 +1,18 @@
 package com.example.ParcAuto.Services;
 
+import com.example.ParcAuto.DTOs.Requests.AlerteResponse;
 import com.example.ParcAuto.DTOs.Requests.VoitureRequest;
 import com.example.ParcAuto.Enum.StatusVoiture;
 import com.example.ParcAuto.Exceptions.ObjectNotFoundException;
+import com.example.ParcAuto.Models.Maintenance;
+import com.example.ParcAuto.Models.Report;
 import com.example.ParcAuto.Models.Voiture;
 import com.example.ParcAuto.Repository.PortReposiotry;
 import com.example.ParcAuto.Repository.VoitureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -59,13 +63,25 @@ public class VoitureService {
         return voitureRepository.findVoituresDispo();
     }
     public List<Voiture> getVoituresIndisponible(){
-        return voitureRepository.findVoituresIndispo();
+        return voitureRepository.findTop5VoituresIndispo();
     }
+
+
+
 
     public Voiture updateVoiture(Long voitureId, VoitureRequest voitureRequest){
         Voiture savedVoiture = voitureRepository.findById(voitureId).orElseThrow(()-> new ObjectNotFoundException("voiture not found"));
         savedVoiture.setMarque(voitureRequest.getMarque());
         savedVoiture.setNumMatricule(voitureRequest.getNumMatricule());
+        savedVoiture.setNumChassis(voitureRequest.getNumChassis());
+        savedVoiture.setCarburant(voitureRequest.getCarburant());
+        savedVoiture.setModel(voitureRequest.getModel());
+        savedVoiture.setAssurance(voitureRequest.getAssurance());
+        savedVoiture.setVignette(voitureRequest.getVignette());
+        savedVoiture.setVisiteTechnique(voitureRequest.getVisiteTechnique());
+        savedVoiture.setCarteGrise(voitureRequest.getCarteGrise());
+        savedVoiture.setCompteurKm(voitureRequest.getCompteurKm());
+        savedVoiture.setProchainVidange(voitureRequest.getProchainVidange());
         savedVoiture.setPort(portReposiotry.findByName(voitureRequest.getPortName()).orElseThrow(()-> new ObjectNotFoundException("port not found")));
         return voitureRepository.save(savedVoiture);
     }

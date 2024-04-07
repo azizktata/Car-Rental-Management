@@ -33,6 +33,5 @@ public class Maintenance {
     private String frais;
 
     @ManyToOne
-    @JsonIgnore
     private Voiture voiture;
 }

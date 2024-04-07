@@ -26,8 +26,10 @@ public class MaintenanceService {
         Voiture voiture = voitureRepository.findById(request.getVoitureId()).orElseThrow(()-> new ObjectNotFoundException("voiture not found"));
         Maintenance maintenance = Maintenance.builder()
                 .voiture(voiture)
+                .dateMaintenance(request.getDateMaintenance())
                 .type(request.getType())
                 .duree(request.getDuree())
+                .frais(request.getFrais())
                 .build();
         voiture.setStatusVoiture(StatusVoiture.indisponible);
         voitureRepository.save(voiture);

@@ -21,5 +21,5 @@ public interface VoitureRepository extends JpaRepository<Voiture,Long> {
     @Query("select v from Voiture v where v.statusVoiture = disponible")
     List<Voiture> findVoituresDispo();
     @Query("select v from Voiture v where v.statusVoiture = indisponible")
-    List<Voiture> findVoituresIndispo();
+    List<Voiture> findTop5VoituresIndispo();
 }
