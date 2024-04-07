@@ -23,13 +23,27 @@ public class VoitureService {
                 .port(portReposiotry.findByName(request.getPortName()).orElseThrow(()-> new ObjectNotFoundException("port not found")))
                 .numMatricule(request.getNumMatricule())
                 .marque(request.getMarque())
+                .model(request.getModel())
+                .carburant(request.getCarburant())
+                .compteurKm(request.getCompteurKm())
+                .prochainVidange(request.getProchainVidange())
+                .countAccident(0)
+                .numChassis(request.getNumChassis())
+                .vignette(request.getVignette())
+                .carteGrise(request.getCarteGrise())
+                .visiteTechnique(request.getVisiteTechnique())
                 .statusVoiture(StatusVoiture.disponible)
+                .assurance(request.getAssurance())
                 .build();
         return voitureRepository.save(voiture);
     }
 
     public List<Voiture> getLesVoitures(){
         return voitureRepository.findAll();
+    }
+
+    public long getVoitureCount(){
+        return voitureRepository.count();
     }
 
     public Voiture getVoiture(Long voitureId){
@@ -61,4 +75,14 @@ public class VoitureService {
     }
 
 
+    public Voiture updateVoitureDispo(Long voitureId) {
+        Voiture savedVoiture = voitureRepository.findById(voitureId).orElseThrow(()-> new ObjectNotFoundException("voiture not found"));
+         savedVoiture.setStatusVoiture(StatusVoiture.disponible);
+        return voitureRepository.save(savedVoiture);
+    }
+    public Voiture updateVoitureIndispo(Long voitureId) {
+        Voiture savedVoiture = voitureRepository.findById(voitureId).orElseThrow(()-> new ObjectNotFoundException("voiture not found"));
+        savedVoiture.setStatusVoiture(StatusVoiture.indisponible);
+        return voitureRepository.save(savedVoiture);
+    }
 }

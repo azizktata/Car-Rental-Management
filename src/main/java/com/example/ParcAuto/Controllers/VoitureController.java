@@ -52,6 +52,14 @@ public class VoitureController {
     public Voiture updateVoiture(@PathVariable Long id,@RequestBody VoitureRequest request){
         return voitureService.updateVoiture(id,request);
     }
+    @PutMapping("/{id}/dispo")
+    public Voiture updateVoitureDispo(@PathVariable Long id){
+        return voitureService.updateVoitureDispo(id);
+    }
+    @PutMapping("/{id}/indispo")
+    public Voiture updateVoitureIndispo(@PathVariable Long id){
+        return voitureService.updateVoitureIndispo(id);
+    }
 
     @DeleteMapping("/{id}")
     public void deleteVoiture(@PathVariable Long id){

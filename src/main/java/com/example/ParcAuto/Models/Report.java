@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -16,10 +18,21 @@ public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String subject;
+    private String sujet;
     private String description;
 
     @ManyToOne
     @JsonIgnore
     private Employe employe;
+
+    // new
+    private LocalDate dateAccident;
+    private String lieuxAccident;
+    @ManyToOne
+    @JsonIgnore
+    private Voiture voiture;
+
+
+
+
 }
