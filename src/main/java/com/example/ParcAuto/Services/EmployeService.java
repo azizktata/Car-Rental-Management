@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class EmployeService {
@@ -54,11 +55,25 @@ public class EmployeService {
 
     public Employe updateEmploye(Long employeId, RegisterRequest registerRequest){
         Employe savedEmploye = employeRepository.findById(employeId).orElseThrow(()-> new ObjectNotFoundException("employe not found"));
-        savedEmploye.setFirstName(registerRequest.getFirstName());
-        savedEmploye.setLastName(registerRequest.getLastName());
-        savedEmploye.setEmail(registerRequest.getEmail());
-        savedEmploye.setFonction(registerRequest.getFonction());
-        savedEmploye.setPassword(registerRequest.getPassword());
+
+        if (!registerRequest.getFirstName().isEmpty()) {
+            savedEmploye.setFirstName(registerRequest.getFirstName());
+        }
+        if (!registerRequest.getUsername().isEmpty()) {
+            savedEmploye.setUsername(registerRequest.getUsername());
+        }
+        if (!registerRequest.getLastName().isEmpty()) {
+            savedEmploye.setLastName(registerRequest.getLastName());
+        }
+        if (!registerRequest.getEmail().isEmpty()) {
+            savedEmploye.setEmail(registerRequest.getEmail());
+        }
+        if (!registerRequest.getFonction().toString().isEmpty()) {
+            savedEmploye.setFonction(registerRequest.getFonction());
+        }
+        if (!registerRequest.getPassword().isEmpty()) {
+            savedEmploye.setPassword(registerRequest.getPassword());
+        }
         return employeRepository.save(savedEmploye);
     }
 

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class MaintenanceService {
@@ -45,8 +46,18 @@ public class MaintenanceService {
 
     public Maintenance updateMaintenance(Long maintenanceId, MaintnenaceRequest maintenanceRequest){
         Maintenance savedMaintenance = maintenanceRepository.findById(maintenanceId).orElseThrow(()-> new ObjectNotFoundException("maintenance not found"));
-        savedMaintenance.setType(maintenanceRequest.getType());
-        savedMaintenance.setDuree(maintenanceRequest.getDuree());
+        if (Objects.nonNull(maintenanceRequest.getType())) {
+            savedMaintenance.setType(maintenanceRequest.getType());
+        }
+        if (Objects.nonNull(maintenanceRequest.getDuree())) {
+            savedMaintenance.setDuree(maintenanceRequest.getDuree());
+        }
+        if (Objects.nonNull(maintenanceRequest.getFrais())) {
+            savedMaintenance.setFrais(maintenanceRequest.getFrais());
+        }
+        if (Objects.nonNull(maintenanceRequest.getDateMaintenance())) {
+            savedMaintenance.setDateMaintenance(maintenanceRequest.getDateMaintenance());
+        }
         return  maintenanceRepository.save(savedMaintenance);
     }
     public void deleteMaintenance(Long maintenanceId){
